@@ -97,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckSNFormate.vb" />
+    <Compile Include="ComboBoxes.vb" />
+    <Compile Include="ContractModule.vb" />
+    <Compile Include="ExcelExport.vb" />
+    <Compile Include="GetLine&amp;PC.vb" />
+    <Compile Include="LineSelector.vb" />
+    <Compile Include="LogInUser.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -113,6 +119,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ShiftCounter.vb" />
     <Compile Include="SQLConnectionMod.vb" />
   </ItemGroup>
   <ItemGroup>

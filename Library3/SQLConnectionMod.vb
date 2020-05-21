@@ -87,7 +87,9 @@ Public Module SQLConnectionMOD
 
             c = conn.CreateCommand
             c.CommandType = CommandType.Text
+#Disable Warning CA2100 ' Проверка запросов SQL на уязвимости безопасности
             c.CommandText = cmd
+#Enable Warning CA2100 ' Проверка запросов SQL на уязвимости безопасности
 
             r = c.ExecuteReader
             If r.Read Then
@@ -103,6 +105,31 @@ Public Module SQLConnectionMOD
         End Try
     End Function
 
+    Public Function SelectInt(cmd As String) As Integer
+        GetConnect()
+        Try
+            Dim c As New SqlCommand
+            Dim r As SqlDataReader
+            Dim k As Integer
+            c = conn.CreateCommand
+            c.CommandType = CommandType.Text
+#Disable Warning CA2100 ' Проверка запросов SQL на уязвимости безопасности
+            c.CommandText = cmd
+#Enable Warning CA2100 ' Проверка запросов SQL на уязвимости безопасности
+
+            r = c.ExecuteReader
+            If r.Read Then
+                k = r.Item(0)
+                r.Close()
+            End If
+
+            Return k
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+        End Try
+    End Function
 
     Public Function SelectBoolean(cmd As String) As Boolean
         GetConnect()
@@ -154,5 +181,31 @@ Public Module SQLConnectionMOD
         End Try
     End Function
 
+    Public Function SelectListString(cmd As String) As ArrayList
+        GetConnect()
+        Try
+            Dim c As New SqlCommand
+            Dim r As SqlDataReader
+            Dim k As New ArrayList()
+            'k = ""
+            c = conn.CreateCommand
+            c.CommandType = CommandType.Text
+            c.CommandText = cmd
+
+            r = c.ExecuteReader
+            If r.Read Then
+                For i = 0 To r.VisibleFieldCount - 1
+                    k.Add(r.Item(i))
+                Next
+            End If
+            r.Close()
+
+            Return k
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+        End Try
+    End Function
 
 End Module

@@ -182,5 +182,27 @@ Public Module GetLots
     '   left join M_Models as M ON L.ModelID = M.ModelID
     '   where isactiv = 1"
 
+    'getlot for Scanning station
+    Public Function GetLotList_ContractStation(DG_LotList As DataGridView) As DataGridView
+        SQL = "use fas
+        SELECT [Specification],[FullLOTCode],M.ModelName,[ID]
+        FROM [FAS].[dbo].[Contract_LOT] as L
+        left join FAS_Models as M On m.ModelID = L.ModelID
+        where L.IsActive = 1 and id > 20053
+        order by id desc"
+        LoadGridFromDB(DG_LotList, SQL)
+        Return DG_LotList
+    End Function
+    Public Function GetCurrentContractLot() As ArrayList
+        SQL = "USE FAS
+        SELECT m.ModelName,[FullLOTCode],[SMTRangeChecked],[SMTStartRange],[SMTEndRange],[ParseLog]
+        FROM [FAS].[dbo].[Contract_LOT] as L
+        left join FAS_Models as M On m.ModelID = L.ModelID
+        where IsActive = 1 and id > 20053
+        order by id desc"
+        Return SelectListString(SQL)
+    End Function
+
+
 
 End Module

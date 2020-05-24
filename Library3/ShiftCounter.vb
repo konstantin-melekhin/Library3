@@ -1,11 +1,11 @@
 ﻿Public Module GetShiftCounter
     Private SQL As String
 
-    Public Function ShiftInfo(StationID As Integer, idApp As Integer, ShiftID As Integer) As ArrayList
+    Public Function ShiftInfo(StationID As Integer, idApp As Integer, ShiftID As Integer, LOTID As Integer) As ArrayList
         'поиск выпуска в текущую смену
         Dim ShiftCounterInfo As New ArrayList(SelectListString("USE FAS
             SELECT [ID],[ShiftCounter],[LOT_Counter] FROM [FAS].[dbo].[FAS_ShiftsCounter]
-            where StationID = " & StationID & " and ID_App = " & idApp & " and 
+            where StationID = " & StationID & " and ID_App = " & idApp & " and LOTID = " & LOTID & " and 
             ShiftID = " & ShiftID & "  and FORMAT(CreateDate,'d', 'de-de')='" & DateTime.Today & "'"))
         Return ShiftCounterInfo
     End Function
@@ -19,15 +19,15 @@
                 ShiftID = 3 'при отсутствии ночных смен
         End Select
         'поиск выпуска в текущую смену
-        Dim ShiftCounterInfo As New ArrayList(ShiftInfo(StationID, idApp, ShiftID))
+        Dim ShiftCounterInfo As New ArrayList(ShiftInfo(StationID, idApp, ShiftID, LOTID))
         If ShiftCounterInfo.Count = 0 Then
             'если записи нет, то делаем новую запись в таблицу счетчика за смену
             SQL = "USE FAS
             insert into [FAS].[dbo].[FAS_ShiftsCounter] (StationID,ID_App,ShiftID,ShiftCounter,CreateDate, LOTID, LOT_Counter) 
-		    values (" & StationID & "," & idApp & "," & ShiftID & ",0,CURRENT_TIMESTAMP," & ShiftID & ",0 )"
+		    values (" & StationID & "," & idApp & "," & ShiftID & ",0,CURRENT_TIMESTAMP," & LOTID & ",0 )"
             RunCommand(SQL)
             'повторно запрашиваем ShiftcounterID 
-            ShiftCounterInfo = ShiftInfo(StationID, idApp, ShiftID)
+            ShiftCounterInfo = ShiftInfo(StationID, idApp, ShiftID, LOTID)
         End If
         Return ShiftCounterInfo
     End Function

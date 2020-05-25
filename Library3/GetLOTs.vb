@@ -193,12 +193,12 @@ Public Module GetLots
         LoadGridFromDB(DG_LotList, SQL)
         Return DG_LotList
     End Function
-    Public Function GetCurrentContractLot() As ArrayList
+    Public Function GetCurrentContractLot(LOTID As Integer) As ArrayList
         SQL = "USE FAS
-        SELECT m.ModelName,[FullLOTCode],[SMTRangeChecked],[SMTStartRange],[SMTEndRange],[ParseLog]
+        SELECT m.ModelName,[FullLOTCode],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange],[ParseLog],[StepSequence]
         FROM [FAS].[dbo].[Contract_LOT] as L
         left join FAS_Models as M On m.ModelID = L.ModelID
-        where IsActive = 1 and id > 20053
+        where IsActive = 1 and id > 20053 and ID = " & LOTID & "
         order by id desc"
         Return SelectListString(SQL)
     End Function

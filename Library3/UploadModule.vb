@@ -40,7 +40,7 @@ Public Module UploadModule
     ''------------------------------------------------------------------------------------------------------------
     'генерируем посылку в приемник для SN и MAC
     Public Function DataGenerationSNorMAC(ByteRequest As String) As String
-        Dim GeneratedRequest As String = ""
+        Dim GeneratedRequest As String
         Dim Header As String = "0DF201180091" '\ заголовок с чексуммой, 
         '\ преобразовываем полученную Data в массив данных и считаем DataCS  
         Dim ByteRequestHex As Byte() = New Byte((ByteRequest.Length / 2) - 1) {}

@@ -31,9 +31,10 @@
         Return ShiftCounterInfo
     End Function
 
-    Public Sub ShiftCounterUpdateCT(ShiftCounterID As Integer, ShiftCounter As Integer, LotCounter As Integer, PassLOTRes As Integer, FAilLOTRes As Integer)
-        SQL = " Use FAS Update [FAS].[dbo].[FAS_ShiftsCounter] set ShiftCounter = " & ShiftCounter & ",LOT_Counter = " & LotCounter & "
-        ,PassLOTRes = " & PassLOTRes & ",FAilLOTRes = " & FAilLOTRes & " where id  = " & ShiftCounterID
+    Public Sub ShiftCounterUpdateCT(StationID As Integer, ShiftCounterID As Integer, ShiftCounter As Integer, LotCounter As Integer, PassLOTRes As Integer, FAilLOTRes As Integer)
+        SQL = " Use FAS Update [FAS].[dbo].[FAS_ShiftsCounter] set LOT_Counter = " & LotCounter & "
+            ,PassLOTRes = " & PassLOTRes & ",FAilLOTRes = " & FAilLOTRes & " where id  = " & ShiftCounterID & "
+             Update [FAS].[dbo].[FAS_ShiftsCounter] set ShiftCounter = " & ShiftCounter & " where id  = " & ShiftCounterID
         RunCommand(SQL)
     End Sub
 

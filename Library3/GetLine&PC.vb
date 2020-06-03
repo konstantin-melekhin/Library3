@@ -14,13 +14,15 @@ Public Module GetLineAndPC
     Public Function GetPCInfo(AppID As Integer) As ArrayList
         Dim StationId As Integer = GetStationID()
         Dim objlist As New ArrayList(SelectListString("USE FAS
-          SELECT List.App_ID, Ap.App_Caption,List.lineID, L.LineName,List.StationID,St.StationName,[CT_ScanStep], Step.StepName
+          SELECT List.App_ID, Ap.App_Caption,List.lineID, L.LineName,List.StationID
+          ,St.StationName,[CT_ScanStep], Step.StepName,Lit.ID,Lit.LiterName
           FROM [FAS].[dbo].[FAS_App_ListForPC] as List
           left join [FAS].[dbo].[FAS_Applications] as Ap On Ap.App_ID = List.App_ID
           left join [FAS].[dbo].[FAS_Stations] as St On St.StationID = List.StationID
           left join [FAS].[dbo].[FAS_Lines] as L ON l.LineID = List.lineID
           left join [FAS].[dbo].[Ct_StepScan] as Step On Step.ID = CT_ScanStep
-          where st.StationID = '" & StationId & "' and List.App_ID = " & AppID))
+          left join [FAS].[dbo].FAS_Liter as Lit On Lit.LineID = List.lineID
+          where st.StationID = " & StationId & " and List.App_ID = " & AppID))
         Return objlist
     End Function
 
@@ -49,5 +51,6 @@ Public Module GetLineAndPC
             SELECT[LineID],[LineName],[Print_Line]  
             FROM [FAS].[dbo].[FAS_Lines] 
             where [TipeID] <> 1 and [TipeID]!= 4 and [TipeID]!= 6 and LineID != 6 and LineID != 14"
-
+    Public PackLineList As String = "Use FAS
+        SELECT[LineID],[LineName]  FROM [FAS].[dbo].[FAS_Lines] where [TipeID] in (2,3) and LineID != 14 and LineID != 6"
 End Module

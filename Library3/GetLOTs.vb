@@ -196,6 +196,7 @@ Public Module GetLots
     Public Function GetCurrentContractLot(LOTID As Integer) As ArrayList
         SQL = "USE FAS
         SELECT m.ModelName,[FullLOTCode],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange],[ParseLog],[StepSequence]
+        ,l.BoxCapacity, l.PalletCapacity, l.LiterIndex
         FROM [FAS].[dbo].[Contract_LOT] as L
         left join FAS_Models as M On m.ModelID = L.ModelID
         where IsActive = 1 and id > 20053 and ID = " & LOTID & "

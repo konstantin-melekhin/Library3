@@ -98,13 +98,12 @@
   <ItemGroup>
     <Compile Include="CheckSNFormate.vb" />
     <Compile Include="ComboBoxes.vb" />
-    <Compile Include="ContractModule.vb" />
+    <Compile Include="PackingModule.vb" />
     <Compile Include="ExcelExport.vb" />
     <Compile Include="GetFullSN.vb" />
     <Compile Include="GetLine&amp;PC.vb" />
     <Compile Include="GetLOTs.vb" />
     <Compile Include="LabelContent.vb" />
-    <Compile Include="LineSelector.vb" />
     <Compile Include="LogInUser.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

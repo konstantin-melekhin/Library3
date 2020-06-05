@@ -208,4 +208,30 @@ Public Module SQLConnectionMOD
         End Try
     End Function
 
+    Public Function LoadGridFromDB2(ByVal Grid1 As DataGridView, cmd As String, ds As DataSet) As DataSet
+        GetConnect()
+        Try
+            Dim c As New SqlCommand
+            Dim da As New SqlDataAdapter
+            'Dim ds As New DataSet
+
+            c = conn.CreateCommand
+            c.CommandText = cmd
+
+            da.SelectCommand = c
+            da.Fill(ds, "Table1")
+
+            Grid1.DataSource = ds
+            Grid1.DataMember = "Table1"
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+        End Try
+        conn.Close()
+        Return ds
+    End Function
+
+
+
 End Module

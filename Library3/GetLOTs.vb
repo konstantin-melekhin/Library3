@@ -207,7 +207,7 @@ Public Module GetLots
         ,[CheckFormatSN_SMT],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange]
         ,[CheckFormatSN_FAS],[FASNumberFormat],[FASRangeChecked],[FASStartRange],[FASEndRange]
         ,[SingleSN],[ParseLog],[StepSequence]
-        ,[BoxCapacity],[PalletCapacity],[LiterIndex],[PreRackStage]
+        ,[BoxCapacity],[PalletCapacity],[LiterIndex],[HexFasSN]
         FROM [FAS].[dbo].[Contract_LOT] as L
         left join FAS_Models as M On m.ModelID = L.ModelID
         where IsActive = 1 and id > 20053 and ID = " & LOTID & "

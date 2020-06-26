@@ -237,6 +237,24 @@ Public Module SQLConnectionMOD
         Return ds
     End Function
 
+    Public Function LoadDS(cmd As String) As DataSet
+        GetConnect()
+        Dim ds As New DataSet
+        Try
+            Dim c As New SqlCommand
+            Dim da As New SqlDataAdapter
+            c = conn.CreateCommand
+            c.CommandText = cmd
 
+            da.SelectCommand = c
+            da.Fill(ds, "Table1")
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+        End Try
+        conn.Close()
+        Return ds
+    End Function
 
 End Module

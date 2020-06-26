@@ -20,7 +20,6 @@
         Return Coordinats
     End Function
     'функция определения формата серийного номера
-
     Public Function GetSNFormat(FormatSMT As String, FormatFAS As String, SN As String, HexSN As Boolean) As ArrayList
         Dim Coordinats() As Integer
         Dim Res As ArrayList = New ArrayList()
@@ -62,6 +61,13 @@
         Return Res
     End Function
 
+
+    'функция определения формата маски серийного номера в лоте
+    Public Function GetLOTSNFormat(FormatSMT As String) As String
+        Dim Coordinats() As Integer = GetCoordinats(FormatSMT)
+        Dim MascBase As String = Mid(FormatSMT, 1, Coordinats(0)) + Mid(FormatSMT, Coordinats(0) + Coordinats(1) + 1, Coordinats(2))
+        Return MascBase
+    End Function
 
 
 End Module

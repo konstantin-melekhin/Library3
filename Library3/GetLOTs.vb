@@ -215,6 +215,29 @@ Public Module GetLots
         Return SelectListString(SQL)
     End Function
 
+    Public Function GetLotList_SDTV(DG_LotList As DataGridView) As DataGridView
+        SQL = "use fas
+        SELECT  [Full_LOT_Name],[LOT],[Specification],M.ModelName,[LOTID]
+--,[ModelID],[IsActive],[IsHDCPUpload],[IsCertUpload]
+--,[IsMACUpload],[ModelCheck],[SWRead],[SWGS1Read],[Manufacture],[Operator],[MarketID],[PTID]
+FROM [FAS].[dbo].[SDTV_LOT] as L
+left join FAS_Models as M On m.ModelID = L.ModelID
+order by L.lotid desc"
+        LoadGridFromDB(DG_LotList, SQL)
+        Return DG_LotList
+    End Function
+
+    Public Function GetCurrent_SDTV(LOTID As Integer) As ArrayList
+        SQL = "use fas
+        SELECT  [Full_LOT_Name],[LOT],[Specification],M.ModelName,[LOTID]
+,l.[ModelID],[IsActive],[IsHDCPUpload],[IsCertUpload]
+,[IsMACUpload],[ModelCheck],[SWRead],[SWGS1Read],[Manufacture],[Operator],[MarketID],[PTID]
+FROM [FAS].[dbo].[SDTV_LOT] as L
+left join FAS_Models as M On m.ModelID = L.ModelID
+where LOTID = " & LOTID & "
+order by L.lotid desc"
+        Return SelectListString(SQL)
+    End Function
 
 
 End Module

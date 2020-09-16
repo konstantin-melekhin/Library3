@@ -42,4 +42,14 @@
         RunCommand(SQL)
     End Sub
 
+    Public Sub ShiftCounterUpdateCT(StationID As Integer, ID_App As Integer, ShiftCounterID As Integer, ShiftCounter As Integer, LotCounter As Integer)
+        SQL = " Use FAS Update [FAS].[dbo].[FAS_ShiftsCounter] set LOT_Counter = " & LotCounter & "
+             where id  = " & ShiftCounterID & "
+                declare @CurDay as datetime
+                select  @CurDay = (Select CURRENT_TIMESTAMP)
+                Update [FAS].[dbo].[FAS_ShiftsCounter] set ShiftCounter = " & ShiftCounter & "
+                where StationID  = " & StationID & " and ID_App = " & ID_App & " and format (CreateDate,'dd.MM.yyyy')  = format (@CurDay, 'dd.MM.yyyy')"
+        RunCommand(SQL)
+    End Sub
+
 End Module

@@ -64,4 +64,37 @@ Public Module GetFullSN
     '    Update [FAS].[dbo].[FAS_TempSerialNumbers] Set isused = 1, PCB_ID = " & PCBID & ", LineID = " & LineID & ", ManufDate = " & DateText & ", PrintStationID = " & StationID & "  where SerialNumber = @SerialNumber  
     '    WAITFOR delay '00:00:00:100'
     '    select SerialNumber from [FAS].[dbo].[FAS_Start] where SerialNumber = @SerialNumber and PrintStationID = " & StationID
+
+    Public Function GenerateFullSTBSN_SDTV(SN As Integer, LOTcode As String, LOTID As Integer) As String
+        'для формирования полногосерийного номера определяем необходимые данные:
+        'ProdDate берем из FAS_SerialNumbers для выбранного серийника
+        'формируем строку, которую будем преобразовываться в массив 
+        '00101202001 - постоянная часть китайского номера
+        FullSTBSN_Arr = "00101202001" & LOTcode & SN
+        StringToIntArray(FullSTBSN_Arr) ' преобразование строки в массив
+        Dim result1, result2, r1, r2 As Integer
+        result1 = (D(0) * 1 + D(1) * 2 + D(2) * 3 + D(3) * 4 + D(4) * 5 + D(5) * 6 + D(6) * 7 + D(7) * 8 + D(8) * 9 + D(9) * 10 +
+                   D(10) * 1 + D(11) * 2 + D(12) * 3 + D(13) * 4 + D(14) * 5 + D(15) * 6 + D(16) * 7 + D(17) * 8 + D(18) * 9 + D(19) * 10 +
+                   D(20) * 1 + D(21) * 2)
+        result2 = (D(0) * 3 + D(1) * 4 + D(2) * 5 + D(3) * 6 + D(4) * 7 + D(5) * 8 + D(6) * 9 + D(7) * 10 + D(8) * 1 + D(9) * 2 +
+                   D(10) * 3 + D(11) * 4 + D(12) * 5 + D(13) * 6 + D(14) * 7 + D(15) * 8 + D(16) * 9 + D(17) * 10 + D(18) * 1 + D(19) * 2 +
+                   D(20) * 3 + D(21) * 4)
+        r1 = result1 Mod 11
+        r2 = result2 Mod 11
+
+        Dim FullSTBSN As String
+        If r1 = 10 Then
+            If r2 = 10 Then
+                FullSTBSN = "0" & FullSTBSN_Arr
+            Else
+                FullSTBSN = r2 & FullSTBSN_Arr
+            End If
+        Else
+            FullSTBSN = r1 & FullSTBSN_Arr
+        End If
+        RunCommand("Update [FAS].[dbo].[SDTV_Upload] set FullSN = '" & FullSTBSN & "', MAC = '" & GenMAC(SN) & "' where SN = " & SN)
+        Return FullSTBSN
+    End Function
+
+
 End Module

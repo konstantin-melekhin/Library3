@@ -10,7 +10,7 @@ Public Module UploadModule
 
     Public crcModel As New RocksoftCrcModel(32, &H4C11DB7, 4294967295, False, False, 0)
     'функция конвертирования текста в HEX
-    Public Function StrToHex(ByRef Data As String) As String
+    Public Function StrToHex(Data As String) As String
         Dim sVal As String
         Dim sHex As String = ""
         While Data.Length > 0
@@ -199,10 +199,11 @@ Public Module UploadModule
     End Function
     ''------------------------------------------------------------------------------------------------------------
     'функция отправки в ком порт команд для прошивки.
-    Public arrBuffer(1024) As Byte
+    Dim arrBuffer() As Byte
     Public intSize As Integer
     Public Sub SendToCOM(ComPort As SerialPort, GeneratedRequest As String, TimeOut As Integer)
         StringToByteArray(GeneratedRequest)
+        arrBuffer = New Byte(1024) {}
         Try
             ComPort.Open()
             ComPort.Write(SendData, 0, SendData.Length)
@@ -222,6 +223,7 @@ Public Module UploadModule
         Dim ResHex, ResHexOut, ResText
         Dim Dalay = 0, TimeOut As Integer = 0
         For i = 1 To 3
+            ResHex = ""
             Dalay += 200
             'ByteRequest = "AB" '\ аргумент, байт запроса
             '\ генерация блока данных для передачи в приемник
@@ -335,27 +337,33 @@ Public Module UploadModule
         Next
         Return Res
     End Function
-
+    '-----------------------------------------------------------------------------------------------------------
+    'Функция стерки: номера
+    Public Function EraseSN(ComPort As SerialPort) As String
+        SendToCOM(ComPort, DataGenerationOneByte("8A"), 100) '\отправка блока данных в приемник
+        Return True
+    End Function
     '------------------------------------------------------------------------------------------------------------
     'Прошивка и проверка серийного номера
     Public Function SetSN(ComPort As SerialPort, SN As String, ErrorLabal As Label, LabelText As String) As String
-        Dim Dalay = 0, TimeOut As Integer = 0
+        Dim Dalay = 0, TimeOut As Integer
         Dim Res, SNData As String
-        For i = 1 To 10
-            Dalay += 200
-            Dim WriteSN As String
+        Dim R_SN, R_SN_OUT As String
+        System.Threading.Thread.Sleep(200)
+        For i = 1 To 5
+            Res = ""
+            Dalay += 100
             SNData = "8A" & StrToHex(SN) '\ константа
-            TimeOut = 100 + Dalay
+            TimeOut = Dalay
             SendToCOM(ComPort, DataGenerationSNorMAC(SNData), TimeOut)
-            WriteSN += System.BitConverter.ToString(arrBuffer, 0, intSize)
-            WriteSN = Replace(WriteSN, "-", "")
             System.Threading.Thread.Sleep(300 + Dalay)
-            Dim R_SN, R_SN_OUT As String
+            R_SN = ""
             SendToCOM(ComPort, DataGenerationOneByte("82"), TimeOut)
             R_SN += System.BitConverter.ToString(arrBuffer, 0, intSize) '/Переводим массив в текст
             R_SN = Replace(R_SN, "-", "") '/ Удаляем лишние символы (бит конвертер добавляет в текст символ "-")
             If InStr(R_SN, "0200") = 13 Then '/ Проверка правильного ответа.
                 'выбираем из полученного ответа символы соответствующие SN в HEX 
+                R_SN_OUT = ""
                 R_SN_OUT = Mid(R_SN, 17, 46) '/ длина номера 23*2 символа
                 For x = 0 To R_SN_OUT.Length - 1 Step 2 '/ Цикл чтения по два символа из выделенной строки
                     Res &= ChrW(CInt("&H" & R_SN_OUT.Substring(x, 2))) '/ Перевод значения TextHex в Text

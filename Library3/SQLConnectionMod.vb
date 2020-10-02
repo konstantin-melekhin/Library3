@@ -6,8 +6,8 @@ Public Module SQLConnectionMOD
     Public conn As SqlConnection
     Public Function GetConnect() As Boolean
         Try
-            'conn = New SqlConnection("Data Source= 192.168.180.9\flat; Initial Catalog= ; User Id = melekhin; Password = me1ekhin;")
-            conn = New SqlConnection("Data Source= wsg180123\sqlmel; Initial Catalog= ;Integrated Security=True;")
+            conn = New SqlConnection("Data Source= 192.168.180.9\flat; Initial Catalog= ; User Id = melekhin; Password = me1ekhin;")
+            'conn = New SqlConnection("Data Source= wsg180123\sqlmel; Initial Catalog= ;Integrated Security=True;")
             '          <!--<connectionStrings>
             '  <add name = "HomeBase" connectionString="Data Source=WIN-3R3T8Q67MUE\SQLEXPRESS; Initial Catalog=CYKP; Integrated Security=True;" providerName ="System.Data.SqlClient"/>
             '</connectionStrings>-->

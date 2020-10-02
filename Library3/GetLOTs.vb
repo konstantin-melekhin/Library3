@@ -222,6 +222,7 @@ Public Module GetLots
 --,[IsMACUpload],[ModelCheck],[SWRead],[SWGS1Read],[Manufacture],[Operator],[MarketID],[PTID]
 FROM [FAS].[dbo].[SDTV_LOT] as L
 left join FAS_Models as M On m.ModelID = L.ModelID
+where IsActive = 1
 order by L.lotid desc"
         LoadGridFromDB(DG_LotList, SQL)
         Return DG_LotList
@@ -234,7 +235,7 @@ order by L.lotid desc"
 ,[IsMACUpload],[ModelCheck],[SWRead],[SWGS1Read],[Manufacture],[Operator],[MarketID],[PTID]
 FROM [FAS].[dbo].[SDTV_LOT] as L
 left join FAS_Models as M On m.ModelID = L.ModelID
-where LOTID = " & LOTID & "
+where LOTID = " & LOTID & " and IsActive = 1
 order by L.lotid desc"
         Return SelectListString(SQL)
     End Function

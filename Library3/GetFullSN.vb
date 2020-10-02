@@ -92,7 +92,7 @@ Public Module GetFullSN
         Else
             FullSTBSN = r1 & FullSTBSN_Arr
         End If
-        RunCommand("Update [FAS].[dbo].[SDTV_Upload] set FullSN = '" & FullSTBSN & "', MAC = '" & GenMAC(SN) & "' where SN = " & SN)
+        RunCommand("Update [FAS].[dbo].[SDTV_Upload] set FullSN = '" & FullSTBSN & "', MAC = '" & GenMAC(SN) & "', IsLocked = 0 where SN = " & SN)
         Return FullSTBSN
     End Function
 

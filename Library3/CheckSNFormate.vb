@@ -20,7 +20,7 @@
         Return Coordinats
     End Function
     'функция определения формата серийного номера
-    Public Function GetSNFormat(FormatSMT As String, FormatFAS As String, SN As String, HexSN As Boolean) As ArrayList
+    Public Function GetSNFormat(FormatSMT As String, FormatFAS As String, SN As String, HexSN As Boolean, CheckSMTFormat As Boolean, CheckFASFormat As Boolean) As ArrayList
         Dim Coordinats() As Integer
         Dim Res As ArrayList = New ArrayList()
         Dim VarSN As Integer
@@ -28,20 +28,41 @@
         For i = 1 To 3
             If i <> 3 Then
                 Dim SNBase As String
-                Coordinats = GetCoordinats(If(i = 1, FormatSMT, FormatFAS))
-                SNBase = If(i = 1, FormatSMT, FormatFAS)
-                Dim MascBase As String = Mid(SNBase, 1, Coordinats(0)) + Mid(SNBase, Coordinats(0) + Coordinats(1) + 1, Coordinats(2))
-                Dim MascSN As String = Mid(SN, 1, Coordinats(0)) + Mid(SN, Coordinats(0) + Coordinats(1) + 1, Coordinats(2))
-                If (MascBase = MascSN) = True Then
-                    Res.Add(True) 'Res(0)
-                    Res.Add(i) 'Res(1)
-                    If i = 1 Or (i = 2 And HexSN = False) Then
-                        VarSN = Convert.ToInt32(Mid(SN, Coordinats(0) + 1, Coordinats(1)))
-                    ElseIf i = 2 And HexSN = True Then
-                        VarSN = CInt("&H" & Mid(SN, Coordinats(0) + 1, Coordinats(1)))
+                If CheckSMTFormat = True And CheckFASFormat = True Then
+                    Coordinats = GetCoordinats(If(i = 1, FormatSMT, FormatFAS))
+                    SNBase = If(i = 1, FormatSMT, FormatFAS)
+                ElseIf CheckSMTFormat = False And CheckFASFormat = True Then
+                    If i = 2 Then
+                        Coordinats = GetCoordinats(FormatFAS)
+                        SNBase = FormatFAS
                     End If
-                    Res.Add(VarSN) 'Res(2)
-                    Exit For
+                ElseIf CheckSMTFormat = True And CheckFASFormat = False Then
+                    If i = 1 Then
+                        Coordinats = GetCoordinats(FormatSMT)
+                        SNBase = FormatSMT
+                    End If
+                End If
+                'Coordinats = GetCoordinats(If(i = 1, FormatSMT, FormatFAS))
+                'SNBase = If(i = 1, FormatSMT, FormatFAS)
+                If Coordinats Is Nothing Then
+                Else
+                    Dim MascBase As String = Mid(SNBase, 1, Coordinats(0)) + Mid(SNBase, Coordinats(0) + Coordinats(1) + 1, Coordinats(2))
+                    Dim MascSN As String = Mid(SN, 1, Coordinats(0)) + Mid(SN, Coordinats(0) + Coordinats(1) + 1, Coordinats(2))
+                    If (MascBase = MascSN) = True Then
+                        Res.Add(True) 'Res(0)
+                        Res.Add(i) 'Res(1)
+                        If i = 1 Or (i = 2 And HexSN = False) Then
+                            Try
+                                VarSN = Convert.ToInt32(Mid(SN, Coordinats(0) + 1, Coordinats(1)))
+                            Catch ex As Exception
+                                VarSN = 0
+                            End Try
+                        ElseIf i = 2 And HexSN = True Then
+                            VarSN = CInt("&H" & Mid(SN, Coordinats(0) + 1, Coordinats(1)))
+                        End If
+                        Res.Add(VarSN) 'Res(2)
+                        Exit For
+                    End If
                 End If
             Else
                 Res.Add(False) 'Res(0)

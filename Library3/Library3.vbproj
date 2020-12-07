@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="CheckSNFormate.vb" />
     <Compile Include="ComboBoxes.vb" />
+    <Compile Include="LabelPrint.vb" />
     <Compile Include="PackingModule.vb" />
     <Compile Include="ExcelExport.vb" />
     <Compile Include="GetFullSN.vb" />

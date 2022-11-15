@@ -45,24 +45,37 @@ Public Module GetLots
         LoadGridFromDB(DG_LotList, SQL)
         Return DG_LotList
     End Function
-    Public Function GetCurrentContractLot(LOTID As Integer) As ArrayList
-        'SQL = "USE FAS
-        'SELECT m.ModelName,[FullLOTCode],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange],[ParseLog],[StepSequence]
-        ',l.BoxCapacity, l.PalletCapacity, l.LiterIndex
-        'FROM [FAS].[dbo].[Contract_LOT] as L
-        'left join FAS_Models as M On m.ModelID = L.ModelID
-        'where IsActive = 1 and id > 20053 and ID = " & LOTID & "
-        'order by id desc"
 
-
-        SQL = "USE FAS SELECT m.ModelName,[FullLOTCode]
-        ,[CheckFormatSN_SMT],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange]
-        ,[CheckFormatSN_FAS],[FASNumberFormat],[FASRangeChecked],[FASStartRange],[FASEndRange]
-        ,[SingleSN],[ParseLog],[StepSequence]
-        ,[BoxCapacity],[PalletCapacity],[LiterIndex],[HexFasSN]
+    Public Function GetLotList_ContractStation(DG_LotList As DataGridView, CustamerID As Integer) As DataGridView
+        SQL = $"use fas
+        SELECT [Specification],[FullLOTCode],M.ModelName,[ID]
         FROM [FAS].[dbo].[Contract_LOT] as L
         left join FAS_Models as M On m.ModelID = L.ModelID
-        where IsActive = 1 and id > 20053 and ID = " & LOTID & "
+        where [СustomersID] = {CustamerID} and L.IsActive = 1 and id > 20053
+        order by id desc"
+        LoadGridFromDB(DG_LotList, SQL)
+        Return DG_LotList
+    End Function
+    Public Function GetLotList_ContractStation(DG_LotList As DataGridView, CustamerID As Integer, DS As DataSet) As DataGridView
+        SQL = $"use fas
+        SELECT [Specification],[FullLOTCode],M.ModelName,[ID]
+        FROM [FAS].[dbo].[Contract_LOT] as L
+        left join FAS_Models as M On m.ModelID = L.ModelID
+        where [СustomersID] = {CustamerID} and L.IsActive = 1 and id > 20053
+        order by id desc"
+        LoadGridFromDB2(DG_LotList, SQL, DS)
+        Return DG_LotList
+    End Function
+
+    Public Function GetCurrentContractLot(LOTID As Integer) As ArrayList
+        SQL = $"USE FAS SELECT 
+        m.ModelName,[FullLOTCode],[CheckFormatSN_SMT],[SMTNumberFormat],[SMTRangeChecked],[SMTStartRange],[SMTEndRange]
+        ,[CheckFormatSN_FAS],[FASNumberFormat],[FASRangeChecked],[FASStartRange],[FASEndRange]
+        ,[SingleSN],[ParseLog],[StepSequence]
+        ,[BoxCapacity],[PalletCapacity],[LiterIndex],[HexFasSN],[FASNumberFormat2],[СustomersID]
+        FROM [FAS].[dbo].[Contract_LOT] as L
+        left join FAS_Models as M On m.ModelID = L.ModelID
+        where IsActive = 1 and id > 20053 and ID = {LOTID}
         order by id desc"
         Return SelectListString(SQL)
     End Function

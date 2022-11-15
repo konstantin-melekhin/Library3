@@ -31,8 +31,8 @@
         Return ShiftCounterInfo
     End Function
 
-    Public Sub ShiftCounterUpdateCT(StationID As Integer, ID_App As Integer, ShiftCounterID As Integer, ShiftCounter As Integer,
-                                    LotCounter As Integer, PassLOTRes As Integer, FAilLOTRes As Integer)
+    Public Sub ShiftCounterUpdateCT(StationID As Integer, ID_App As Integer, ShiftCounterID As Integer, ShiftCounter As Integer, LotCounter As Integer,
+                                    PassLOTRes As Integer, FAilLOTRes As Integer)
         SQL = " Use FAS Update [FAS].[dbo].[FAS_ShiftsCounter] set LOT_Counter = " & LotCounter & "
             ,PassLOTRes = " & PassLOTRes & ",FAilLOTRes = " & FAilLOTRes & " where id  = " & ShiftCounterID & "
                 declare @CurDay as datetime

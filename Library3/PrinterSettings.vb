@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Text
 
-Public Module PrinterSettings
+Public Module PrintersSettings
     Public PrSet As Boolean
     Public PrintSetpath As String
     Public fs As FileStream

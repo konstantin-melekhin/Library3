@@ -82,7 +82,7 @@ made_QC
     Public Function LabelID(SC_Text As String, labelCount As Integer, LabelScenario As String)
         If LabelScenario = "A" Then
             LabelIDContent = "       
-^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR2,2^MD10^JUS^LRN^CI0^XZ
+^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH10,35^JMA^PR2,2^MD10^JUS^LRN^CI0^XZ
 ^XA
 ^MMT
 ^PW685
